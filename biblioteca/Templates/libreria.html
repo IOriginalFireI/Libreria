@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librería</title>
+</head>
+
+<body>
+    <h1>Librería</h1>
+
+    <a href="{% url 'actualizar' request.user.id %}" style="text-decoration: none;"><button>Actualizar información de usuario</button></a>
+    <a href="{% url 'salir' %}" style="text-decoration: none;"><button>Cerrar sesión</button></a>
+    <a href="{% url 'cambiar_contraseña' %}" style="text-decoration: none;"><button>Cambiar contraseña</button></a>
+
+    <form action="" method="POST" style="text-align: center; border: 1px solid black; border-radius: 20px;"
+        enctype="multipart/form-data">
+        <h3>Añadir libro</h4>
+            {% csrf_token %}
+            {{libros_form.as_p}}
+            <button type="submit">Añadir</button>
+    </form>
+
+    {{message}}
+
+    {% for libro in libros %}
+
+    <p>Título: {{libro.titulo}}</p>
+    <p>Año: {{libro.año}}</p>
+    <p>Autor: {{libro.autor}}</p>
+    <p>Editorial: {{libro.editorial}}</p>
+    <img src="{{ libro.imagen.url }}" , width="200" height="200">
+    <p>{{libro.descripcion}}</p>
+    {% if libro.disponible == False %}
+    <p>Disponible: No</p>
+    {% else %}
+    <p>Disponible: Sí</p>
+    {% endif %}
+    <a href="{% url 'eliminar' libro.id %}" style="text-decoration: none;"><button>Eliminar</button></a>
+    <a href="{% url 'editar' libro.id %}" style="text-decoration: none;"><button>Editar</button></a>
+
+    {% endfor %}
+</body>
+
+</html>
+{% endblock %}
